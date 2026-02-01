@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+</head>
+<body>
+    <!--Navbar-->
+    <div class="nav flex text-white bg-green-500 pb-10">
+        <ul class="flex space-x-10 mx-auto mt-10 items-center justify-center">
+            <a href="{% url "home" %}">
+            <li class="text-lg font-semibold">Home</li>
+            </a>
+            <li class="text-lg font-semibold">Event</li>
+            <a href="{% url "organizer_dashboard" %}"> 
+            <li class="text-lg font-semibold">Organizer Dashboard</li>
+            </a>
+            <li class="text-lg font-semibold">Contact</li>
+        </ul>
+    </div>
+    <div class="w-1/2 mx-auto items-center justify-center">
+        <div>
+             {% if messages %}
+                {% for message in messages %}
+                    <div class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</div>
+                {% endfor %}
+            {% endif %}
+        </div> 
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="bg-blue-500 text-white rounded-md p-3 mt-4">Submit</button>
+        </form>
+    </div>
+    
+</body>
+</html>

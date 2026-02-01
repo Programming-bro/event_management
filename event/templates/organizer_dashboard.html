@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Tailwind link -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <!--Navbar-->
+    <div class="nav flex text-white bg-green-500 pb-10">
+        <ul class="flex space-x-10 mx-auto mt-10 items-center justify-center">
+            <a href="{% url "home" %}">
+            <li class="text-lg font-semibold">Home</li>
+            </a>
+            <li class="text-lg font-semibold">Event</li>
+            <a href="{% url "organizer_dashboard" %}"> 
+            <li class="text-lg font-semibold">Organizer Dashboard</li>
+            </a>
+            <li class="text-lg font-semibold">Contact</li>
+        </ul>
+    </div>
+    <div class="sm:m-2 md:m-8">
+        <div class="header flex justify-between">
+            <div class="items-center text-xl font-semibold mx-6">
+                Dashboard
+            </div>
+            <div class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6 mx-8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                </svg>
+
+                <span class="me-8 bg-blue-500 h-8 w-8 text-lg text-center rounded-full text-white">
+                    B
+                </span>
+            </div>
+        </div>
+        <div class="main">
+            <!-- Grid Start -->
+            <div class="row flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                <a href="{% url "organizer_dashboard" %}?type=todays">
+                    <div class="card rounded h-40  grid-cols-1 p-5 m-6 bg-white">
+                    <div class="text-gray-500">
+                        Total Participants
+                    </div>
+                    <div class="flex justify-between my-2">
+                        <div class="text-2xl font-semibold">
+                            {{participants.total}}
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6 text-blue-900 bg-blue-200 rounded-full h-10 w-10 p-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                            </svg>
+
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        11 last month
+                    </div>
+                    </div>
+                </a>
+                <a href="{% url "organizer_dashboard" %}?type=all">
+                    <div class="card rounded h-40  grid-cols-1 p-5 m-6 bg-white">
+                    <div class="text-gray-500">
+                        All Events
+                    </div>
+                    <div class="flex justify-between my-2">
+                        <div class="text-2xl font-semibold">
+                            {{counts.total}}
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6 text-green-900 bg-green-200 rounded-full h-10 w-10 p-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+
+
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        11 last month
+                    </div>
+                    </div>
+                </a>
+                <a href="{% url "organizer_dashboard" %}?type=upcoming">
+                    <div class="card rounded h-40  grid-cols-1 p-5 m-6 bg-white">
+                    <div class="text-gray-500">
+                        Upcoming Events
+                    </div>
+                    <div class="flex justify-between my-2">
+                        <div class="text-2xl font-semibold">
+                            {{counts.upcoming}}
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6 text-yellow-600 bg-yellow-200 rounded-full h-10 w-10 p-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+
+
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        11 last month
+                    </div>
+                    </div>
+                </a>
+                <a href="{% url "organizer_dashboard" %}?type=past">
+                    <div class="card rounded h-40  grid-cols-1 p-5 m-6 bg-white">
+                    <div class="text-gray-500">
+                        Past Events
+                    </div>
+                    <div class="flex justify-between my-2">
+                        <div class="text-2xl font-semibold">
+                            {{counts.past}}
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6 text-purple-900 bg-purple-200 rounded-full h-10 w-10 p-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                            </svg>
+
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        11 last month
+                    </div>
+                    </div>
+                </a>
+            </div>
+            <!-- Second Grid -->
+            <div class="row flex grid  sm:text-sm grid-cols-1">
+                <!--Today's Events-->
+                <div class="card w-auto sm:text-xs rounded h-auto  grid-cols-1 p-5 m-6 bg-white">
+                    <div>
+                        <p class="font-semibold sm:text-sm md:text-xl ps-2 mb-4">Today's events</p>
+                    </div>
+                    <div class="flex grid grid-cols-4 justify-between mt-2 sm:text:xs sm:font-normal md:font-semibold text-gray-500 ms-2">
+                        <div>EVENT NAME</div>
+                        <div class="mx-auto item-center justify-center">CATEGORY</div>
+                        <div class="mx-auto item-center justify-center">LOCATION</div>
+                        <div class="mx-auto item-center justify-center">EVENT DATE</div>
+                    </div>
+                    {% for event in todays %}
+                    <div class="flex justify-between mt-3 grid grid-cols-4">
+                        <div class="flex">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mx-2 mt-2">
+                            </div>
+                            <p class="text-base">{{event.name}} </p>
+                            
+                        </div>
+                        <div class="mx-auto items-center justify-center">
+                            <p class="w-auto px-4 py-2 text-blue-600 font-medium bg-blue-100 rounded">{{event.category}} </p>
+                        </div>
+                        <div class="flex mx-auto items-center justify-center text-base font-semibold">
+                            {{event.location}}
+                        </div>
+                        <div class="mx-auto items-center justify-center">
+                            <p class="text-gray-500">{{event.event_date}} </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    
+                </div>
+                <!-- All Events -->
+                <div class="card w-auto sm:text-xs rounded h-auto  grid-cols-1 p-5 m-6 bg-white">
+                    <div>
+                        <p class="font-semibold sm:text-sm md:text-xl ps-2 mb-4">{{type}} events</p>
+                    </div>
+                    <div class="flex grid grid-cols-4 justify-between mt-2 sm:text:xs sm:font-normal md:font-semibold text-gray-500 ms-2">
+                        <div>EVENT NAME</div>
+                        <div class="mx-auto item-center justify-center">CATEGORY</div>
+                        <div class="mx-auto item-center justify-center">LOCATION</div>
+                        <div class="mx-auto item-center justify-center">EVENT DATE</div>
+                    </div>
+                    {% for event in events %}
+                    <div class="flex justify-between mt-3 grid grid-cols-4">
+                        <div class="flex space-x-4">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mx-2 mt-2">
+                            </div>
+                            <p class="text-base">{{event.name}} </p>
+                            <a href="{% url "update_event" event.id %}"><button class="bg-green-500 px-2">Edit</button></a> 
+                            
+                        </div>
+                        <div class="mx-auto items-center justify-center">
+                            <p class="w-auto px-4 py-2 text-blue-600 font-medium bg-blue-100 rounded">{{event.category}} </p>
+                        </div>
+                        <div class="flex mx-auto items-center justify-center text-base font-semibold">
+                            {{event.location}}
+                        </div>
+                        <div class="mx-auto items-center justify-center">
+                            <p class="text-gray-500">{{event.event_date}} </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
