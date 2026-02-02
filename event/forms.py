@@ -28,7 +28,7 @@ class EventModelForm(forms.ModelForm):
                 'placeholder': "Enter Event title"
             }),
             'description' : forms.TextInput(attrs={
-                'class': "border-2 border-gray-500 rounded-lg h-500 mt-5 px-2",
+                'class': "border-2 border-gray-500 rounded-lg h-40 mt-5 px-2",
                 'placeholder': "Describe event details"
             }),
             'event_date' : forms.SelectDateWidget(attrs={

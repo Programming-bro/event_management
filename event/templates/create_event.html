@@ -1,13 +1,13 @@
 {% extends "navbar.html" %}
-{% block title %}Create Task{% endblock title %}
+{% block title %}Event Form{% endblock title %}
 {% load static %}
 {% block event %}
     {% comment %} Form {% endcomment %}
     <div class="grid grid-cols-1 mx-auto items-center justify-center">
-        <div>
+        <div class="w-1/2 mx-auto">
              {% if messages %}
                 {% for message in messages %}
-                    <div class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</div>
+                    <div class="px-2 py-1 {% if message.tags == 'success' %}bg-green-400{% endif %} in ">{{message}}</div>
                 {% endfor %}
             {% endif %}
         </div> 
