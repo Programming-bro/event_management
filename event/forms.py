@@ -31,11 +31,12 @@ class EventModelForm(forms.ModelForm):
                 'class': "border-2 border-gray-500 rounded-lg h-500 mt-5 px-2",
                 'placeholder': "Describe event details"
             }),
-            'event_date' : forms.SelectDateWidget,
+            'event_date' : forms.SelectDateWidget(attrs={
+                'class': "border-2 border-gray-500 bg-gray-100 my-4 rounded-sm"
+            }),
             'location' : forms.TextInput(attrs={
                 'class': "border-2 border-gray-500 w-100 rounded-lg mt-5 px-2",
                 'placeholder': "Event Location"
             }),
             'attended' : forms.CheckboxSelectMultiple,
-            # 'category' : forms.CheckboxSelectMultiple
         }

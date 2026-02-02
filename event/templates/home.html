@@ -1,77 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 h-40">
-    <div class="nav flex text-white bg-green-500 pb-10">
-        <ul class="flex space-x-10 mx-auto mt-10 items-center justify-center">
-            <li class="text-lg font-semibold">Home</li>
-            <li class="text-lg font-semibold">Event</li>
-            <a href="{% url "organizer_dashboard" %}"> 
-            <li class="text-lg font-semibold">Organizer Dashboard</li>
-            </a>
-            <li class="text-lg font-semibold">Contact</li>
-        </ul>
-    </div>
+{% extends "navbar.html" %}
+{% block title %}Home{% endblock title %}
+{% load static %}
+{% block event %}
     <!--Search bar -->
+    
     <div class="header flex mx-auto items-center justify-center my-20 space-x-8 px-10">
         <div>
             <p class="text-4xl text-green-500">Event Search</p>
         </div>
         <div class="search space-x-4">
-            <input type="text" placeholder="Search Event" class="border-2 h-10 px-2 w-60">
-            <label for="events" class="h-10">Event Category:</label>
-                <select name="events" id="events" class="h-10">
-                    <option value="Social Event">Social Event</option>
-                    <option value="Corporate Event">Corporate Event</option>
-                    <option value="Technical Event">Technical Event</option>
-                    <option value="Cultural" selected>Cultural</option>
-                </select>
-            <button class="border-1 h-10 text-white bg-blue-500 p-2 rounded-md">Filter</button>
+            <form action="">
+            <input type="search" placeholder="Search Event" name="search" class="border-2 h-10 px-2 w-60">
+            <input type="location" placeholder="Event Location" name="location" class="border-2 h-10 px-2 w-60">
+            <button type="submit" class="border-1 h-10 text-white bg-blue-500 p-2 rounded-md">Filter</button>
+            </form>
         </div>
     </div>
-    <!--Events-->
+   
     <div class="mx-auto items-center justify-center">
         
         {% for event in events %}
+        <a href="{% url "event_details" event.id %}">
         <div class="bg-white h-60 m-4 rounded-lg flex mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
             <div class="p-5">
-                <img class="h-40 w-60" src="https://jthemes.net/themes/html/harmony-event/assets/images/event/event-3.jpg" alt="">
+                <img class="h-40 w-60" src="{% static "images/event.jpg" %}" alt="">
             </div>
             <div class="p-5 space-y-4 sm:w-full">
                 <p class="text-xl"> {{event.name}} </p>
                 <p class="text-md">Event Catergory: {{event.category}} </p>
-                <p class="text-md">Participants:  </p>
+                <p class="text-md">Location: {{event.location}} </p>
                 <button class="border-2 p-2 bg-blue-500 rounded-md text-white">Details</button>
             </div>
         </div>
+        </a>
         {% endfor %}
-        <div class="bg-white h-60 m-4 rounded-lg flex mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
-            <div class="p-5">
-                <img class="h-40 w-60" src="https://jthemes.net/themes/html/harmony-event/assets/images/event/event-3.jpg" alt="">
-            </div>
-            <div class="p-5 space-y-4 sm:w-full">
-                <p class="text-xl">Event Name</p>
-                <p class="text-md">Event Catergory: Social Event</p>
-                <p class="text-md">Participants: 20</p>
-                <button class="border-2 p-2 bg-blue-500 rounded-md text-white">Details</button>
-            </div>
-        </div>
-        <div class="bg-white h-60 m-4 rounded-lg flex mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
-            <div class="p-5">
-                <img class="h-40 w-60" src="https://jthemes.net/themes/html/harmony-event/assets/images/event/event-3.jpg" alt="">
-            </div>
-            <div class="p-5 space-y-4 sm:w-full">
-                <p class="text-xl">Event Name</p>
-                <p class="text-md">Event Catergory: Social Event</p>
-                <p class="text-md">Participants: 20</p>
-                <button class="border-2 p-2 bg-blue-500 rounded-md text-white">Details</button>
-            </div>
-        </div>
+        
     </div>
-</body>
-</html>
+{% endblock event %}

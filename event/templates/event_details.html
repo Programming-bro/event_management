@@ -1,0 +1,39 @@
+{% extends "navbar.html" %}
+{% block title %}Event Details{% endblock title %}
+{% load static %}
+{% block event %}
+    
+    <div class="w-1/2 mt-20 mx-auto items-center justify-center">
+        <div class="py-2">
+            <p class="text-3xl">{{event.name}} </p>
+        </div>
+        <img src="{% static "images/event.jpg" %}" alt="">
+        <div class="grid sm:grid-cols-1 md:grid-cols-3">
+            <div class="bg-white my-5 border-2 bordder-gray-500 sm:my-5 md:my-10 items-center justify-center text-center"><span class="font-semibold text-gray-500">Event Date</span><br>{{event.event_date}} </div>
+            <div class="bg-white my-5 border-2 bordder-gray-500 sm:my-5 md:my-10 items-center justify-center text-center"><span class="font-semibold text-gray-500">Event Category</span><br>{{event.category}} </div>
+            <div class="bg-white my-5 border-2 bordder-gray-500 sm:my-5 md:my-10 items-center justify-center text-center"><span class="font-semibold text-gray-500">Event Location</span><br>{{event.location}} </div>
+        </div>
+        <div class="text-gray-500 py-10">
+            {{event.description}}
+        </div>
+        <div class="pb-10">
+
+            <p class="text-base font-semibold">Participants: </p>
+            {% for prc in participants %}
+                <div class="flex justify-between mt-3 grid grid-cols-4">
+                        <div class="space-x-4 grid sm:grid-cols-1 md:grid-cols-4">
+                            <div class="flex">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mx-2 mt-2">
+                                </div>
+                                <p class="text-base">{{prc.name}} </p>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock event %}

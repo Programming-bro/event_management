@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+</head>
+<body class="bg-gray-100 h-40">
+    <!--Navbar-->
+    <div class="nav flex text-white bg-green-500 pb-10 mb-10">
+        <ul class="flex space-x-10 mx-auto mt-10 items-center justify-center">
+            <a href="{% url "home" %}">
+            <li class="text-lg font-semibold">Home</li>
+            </a>
+            <li class="text-lg font-semibold">About</li>
+            <a href="{% url "organizer_dashboard" %}"> 
+            <li class="text-lg font-semibold">Organizer Dashboard</li>
+            </a>
+            <li class="text-lg font-semibold">Contact</li>
+        </ul>
+    </div>
+    {% block event %}
+
+    {% endblock event %}
+</body>
+</html>
+
