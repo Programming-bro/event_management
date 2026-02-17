@@ -45,4 +45,4 @@ def send_booking_email(sender, instance, action, pk_set, **kwargs):
                 fail_silently=False,
             )
         except Exception as e:
-            print(f"Failed to send email to {instance.email}: {str(e)}")
+            print(f"Failed to send email to {str(e)}")
