@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-blue-600 text-white py-32 md:py-40">
+<section class="bg-green-500 text-white py-32 mx-auto md: md:w-2/3">
     <div class="container mx-auto px-6 text-center">
       <h1 class="text-4xl md:text-5xl font-bold mb-6">
-        Streamline Your Workflow with TaskMaster
+        Welcome to Event 360
       </h1>
       <p class="text-xl mb-12">
-        Empower your team with our intuitive task management solution
+        An smart solution of event management
       </p>
       <a
         href="#"
-        class="bg-white text-blue-600 px-8 py-4 rounded-md font-semibold text-lg hover:bg-gray-100 transition duration-300"
+        class="bg-white text-green-600 px-8 py-4 rounded-md font-semibold text-lg hover:bg-gray-100 transition duration-300"
         >Get Started</a
       >
     </div>
@@ -31,27 +31,24 @@
             <li>Manage user roles and permissions</li>
             <li>Generate comprehensive reports</li>
             <li>Configure system-wide settings</li>
-            <li>Monitor team performance</li>
           </ul>
         </div>
-        <!-- Manager Card -->
+        <!-- Organizer Card -->
         <div class="bg-white rounded-lg shadow-md p-8">
           <h3 class="text-2xl font-semibold mb-6">Manager</h3>
           <ul class="list-disc list-inside text-gray-600 space-y-3">
-            <li>Create and assign tasks to employees</li>
-            <li>Track project progress in real-time</li>
+            <li>Create and assign events to participants</li>
             <li>Set deadlines and priorities</li>
             <li>Generate team performance reports</li>
           </ul>
         </div>
-        <!-- Employee Card -->
+        <!-- Participants -->
         <div class="bg-white rounded-lg shadow-md p-8">
           <h3 class="text-2xl font-semibold mb-6">Employee</h3>
           <ul class="list-disc list-inside text-gray-600 space-y-3">
-            <li>View and manage assigned tasks</li>
-            <li>Collaborate with team members</li>
-            <li>Update task status and progress</li>
-            <li>Track personal productivity</li>
+            <li>View Events</li>
+            <li>Collaborate with others</li>
+            <li>Track participated Events</li>
           </ul>
         </div>
       </div>
@@ -60,18 +57,6 @@
 
   <!-- Call to Action -->
   <section class="bg-gray-200 py-24 md:py-32">
-    <div class="container mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold mb-6">
-        Ready to Boost Your Team's Productivity?
-      </h2>
-      <p class="text-xl mb-12">
-        Join thousands of organizations already using TaskMaster
-      </p>
-      <a
-        href="#"
-        class="bg-blue-500 text-white px-8 py-4 rounded-md font-semibold text-lg hover:bg-blue-600 transition duration-300"
-        >Start Free Trial</a
-      >
-    </div>
+    
   </section>
   {% endblock %}
