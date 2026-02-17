@@ -1,7 +1,7 @@
-{% extends "navbar.html" %}
+{% extends "base.html" %}
 {% block title %}Event Form{% endblock title %}
 {% load static %}
-{% block event %}
+{% block content %}
     {% comment %} Form {% endcomment %}
     <div class="grid grid-cols-1 mx-auto items-center justify-center">
         <div class="w-1/2 mx-auto">
@@ -12,7 +12,7 @@
             {% endif %}
         </div> 
         <div class="mx-auto items-center justify-center">
-            <form method="POST">
+            <form method="POST" enctype='multipart/form-data'>
             {% csrf_token %}
             {{form.as_p}}
             <button type="submit" class="bg-blue-500 text-white rounded-md p-3 mt-4">Submit</button>
@@ -21,4 +21,4 @@
         
     </div>
     
-{% endblock event %}
+{% endblock content %}

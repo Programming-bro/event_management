@@ -1,20 +1,21 @@
-{% extends "navbar.html" %}
+{% extends "base.html" %}
 {% block title %}Dahsboard{% endblock title %}
 {% load static %}
-{% block event %}
 
+{% block content %}
     <div class="sm:m-2 md:m-8">
         <div class="header flex justify-between">
             <div class="items-center text-xl font-semibold mx-6">
                 Dashboard
             </div>
             <div class="flex">
+                {% if group == 'Admin' or group == 'Organizer' %}
                 <div class="mx-auto items-center justify-center">
                     <a href="{% url "create_event" %}">
                         <p class="w-auto px-4 py-2 text-blue-600 font-medium bg-blue-100 rounded">CREATE EVENT </p>
                     </a> 
                 </div>
-                
+                {% endif %}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6 mx-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -25,15 +26,31 @@
         </div>
         <div class="main">
             <!-- Grid Start -->
-            <div class="row flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                <a href="{% url "organizer_dashboard" %}?type=todays">
+            <div class="row grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                {% if group == 'User' %}
+                    <a href="{% url "organizer_dashboard" %}?type=my">
+                {% else %}
+                    <a href="{% url "organizer_dashboard" %}?type=todays">
+                {% endif %}
+                
+                
                     <div class="card rounded h-40  grid-cols-1 p-5 m-6 bg-white">
                     <div class="text-gray-500">
-                        Total Participants
+                        {% if group == 'User' %}
+                            My Events
+                        {% else %}
+                            Total Participants
+                        {% endif %}
+                        
                     </div>
                     <div class="flex justify-between my-2">
                         <div class="text-2xl font-semibold">
-                            {{participants.total}}
+                            {% if group == 'User' %}
+                                {{my_cnt}}
+                            {% else %}
+                                {{participants.total}}
+                            {% endif %}
+                            
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -120,7 +137,7 @@
                 {% endfor %}
             {% endif %}
             </div>
-            <div class="row flex grid  sm:text-sm grid-cols-1">
+            <div class="row grid  sm:text-sm grid-cols-1">
                 <!--Today's Events-->
                 
                 <!-- All Events -->
@@ -128,30 +145,38 @@
                     <div>
                         <p class="font-semibold sm:text-sm md:text-xl ps-2 mb-4">{{type}} events</p>
                     </div>
-                    <div class="flex grid grid-cols-4 justify-between mt-2 sm:text:xs sm:font-normal md:font-semibold text-gray-500 ms-2">
+                    <div class=" grid grid-cols-4 justify-between mt-2 sm:text:xs sm:font-normal md:font-semibold text-gray-500 ms-2">
                         <div>EVENT NAME</div>
                         <div class="mx-auto item-center justify-center">CATEGORY</div>
                         <div class="mx-auto item-center justify-center">LOCATION</div>
                         <div class="mx-auto item-center justify-center">EVENT DATE</div>
                     </div>
                     {% for event in events %}
-                    <div class="flex justify-between mt-3 grid grid-cols-4">
-                        <div class="space-x-4 grid sm:grid-cols-1 md:grid-cols-4">
+                    <div class="justify-between mt-3 grid grid-cols-4">
+                        <div class="space-x-4 grid sm:grid-cols-1 md:grid-cols-3">
                             
                             <div class="flex">
                                 <div class="w-2 h-2 bg-green-500 rounded-full mx-2 mt-2">
                                 </div>
                                 <p class="text-base">{{event.name}} </p>
                             </div>
+                            {% if group == 'Admin' or group == 'Organizer' %}
                             <div class="py-1">
                                 <a href="{% url "update_event" event.id %}"><button class="bg-green-500 text-white font-semibold py-1 px-2 rounded-sm">Edit</button></a> 
                             </div>
+                            
                             <div class="py-1">
                                 <form action="{% url "delete_event" event.id %}" method="POST">
                                 {% csrf_token %}
                                 <button type="submit" class="bg-red-500 text-white font-semibold py-1 px-2 rounded-sm">Delete</button>
-                            </form> 
+                                </form> 
                             </div>
+                            {% else %}
+                                <form action="{% url "book_event" event.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-blue-500 text-white font-semibold py-1 px-2 rounded-sm">Book Event</button>
+                                </form>
+                            {% endif %}
                         </div>
                         <div class="mx-auto items-center justify-center">
                             <p class="w-auto px-4 py-2 text-blue-600 font-medium bg-blue-100 rounded">{{event.category}} </p>
@@ -170,4 +195,4 @@
             </div>
         </div>
     </div>
-{% endblock event %}
+{% endblock content %}
