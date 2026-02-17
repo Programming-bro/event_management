@@ -36,11 +36,13 @@ def send_booking_email(sender, instance, action, pk_set, **kwargs):
     if action == "post_add":
         users = instance.participant.filter(pk__in=pk_set)
         email_list = [user.email for user in users]
-        
-        send_mail(
-            'RSVP confirmed.',
-            f'Your RSVP Booking for {instance.name} is confirmed',
-            settings.EMAIL_HOST_USER,
-            email_list,
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                'RSVP confirmed.',
+                f'Your RSVP Booking for {instance.name} is confirmed',
+                settings.EMAIL_HOST_USER,
+                email_list,
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Failed to send email to {instance.email}: {str(e)}")
