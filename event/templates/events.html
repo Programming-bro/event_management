@@ -1,7 +1,7 @@
-{% extends "navbar.html" %}
-{% block title %}Home{% endblock title %}
+{% extends "base.html" %}
+{% block title %}Events{% endblock title %}
 {% load static %}
-{% block event %}
+{% block content %}
     <!--Search bar -->
     
     <div class="header flex mx-auto items-center justify-center my-20 space-x-8 px-10">
@@ -21,9 +21,9 @@
         
         {% for event in events %}
         <a href="{% url "event_details" event.id %}">
-        <div class="bg-white h-60 m-4 rounded-lg flex mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
+        <div class="bg-white h-60 m-4 rounded-lg mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
             <div class="p-5">
-                <img class="h-40 w-60" src="{% static "images/event.jpg" %}" alt="">
+                <img class="h-40 w-60" src="{{event.asset.url}}" alt="">
             </div>
             <div class="p-5 space-y-4 sm:w-full">
                 <p class="text-xl"> {{event.name}} </p>
@@ -36,4 +36,4 @@
         {% endfor %}
         
     </div>
-{% endblock event %}
+{% endblock content %}
