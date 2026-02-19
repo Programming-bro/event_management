@@ -18,7 +18,7 @@ class Event(models.Model):
 
     asset = models.ImageField(upload_to='event_asset',  blank=True, null=True,default="event_asset/default.jpg")
     def __str__(self):
-        self.name
+        return self.name
 
 class Category(models.Model):
     name = models.TextField(max_length=100)
