@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
 # Create your models here.
 
@@ -14,7 +15,7 @@ class Event(models.Model):
         on_delete=models.CASCADE,
         default=1
     )
-    participant = models.ManyToManyField(User,related_name='revp_event')
+    participant = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='revp_event')
 
     asset = models.ImageField(upload_to='event_asset',  blank=True, null=True,default="event_asset/default.jpg")
     def __str__(self):

@@ -13,10 +13,11 @@ from users.views import is_admin
 def is_organizer(user):
     return user.groups.filter(name='Organizer').exists()
 
-
 def is_participant(user):
-    return user.groups.filter(name='User').exists()
+    return user.groups.filter(name='Participant').exists()
 
+@login_required
+@permission_required("event.view_event", login_url='no-permission')
 def events(request):
     search = request.GET.get('search','all')
     loc = request.GET.get('location','all')
@@ -38,15 +39,21 @@ def events(request):
     }
     return render(request,"events.html",context)
 
+@login_required
+@permission_required("event.view_event", login_url='no-permission')
 def event_details(request,id):
     event = Event.objects.prefetch_related('participant').get(id=id)
+    group = request.user.groups.first().name
     participants = event.participant.all()
     context = {
         "participants":participants,
-        "event":event
+        "event":event,
+        "group":group
     }
     return render(request,"event_details.html",context)
 
+@login_required
+# @user_passes_test(is_organizer, login_url='no-permission')
 def org_dash(request):
     type = request.GET.get('type','todays') 
     # tasks = Task.objects.select_related('details').prefetch_related('assigned_to').all()
@@ -84,6 +91,8 @@ def org_dash(request):
     }
     return render(request,"organizer_dashboard.html",context)
 
+@login_required
+@user_passes_test(is_participant, login_url='no-permission')
 def user_dash(request):
     return render(request,"organizer_dashboard.html")
 
