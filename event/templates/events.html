@@ -21,10 +21,10 @@
         
         {% for event in events %}
         <a href="{% url "event_details" event.id %}">
-        <div class="bg-white h-60 m-4 rounded-lg mx-auto sm:w-auto grid grid-cols-1 md:w-1/2 grid grid-cols-2">
-            <div class="p-5">
-                <img class="h-40 w-60" src="{{event.asset.url}}" alt="">
-            </div>
+        <div class="bg-white h-60 m-4 rounded-lg mx-auto sm:w-auto grid sm:grid-cols-1 md:w-1/2 grid-cols-2">
+            {% comment %} <div class="p-5">
+                <img class="h-40 w-60" src="{{event.asset.url}}" alt="Event Image">
+            </div> {% endcomment %}
             <div class="p-5 space-y-4 sm:w-full">
                 <p class="text-xl"> {{event.name}} </p>
                 <p class="text-md">Event Catergory: {{event.category}} </p>

@@ -18,6 +18,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
 
 # Application definition
@@ -85,24 +87,24 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 # }
 
 #for postgre
-DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://event_db_zmkk_user:Zy4V99f270RhY6WNMZ26tKxBBJYGJsST@dpg-d609uu4hg0os73a6dtlg-a.oregon-postgres.render.com/event_db_zmkk',
-        conn_max_age=600
-    )
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'event_management',
-#         'USER': 'postgres',
-#         'PASSWORD': '2410',
-#         'HOST': 'localhost',
-#         'PORT': '5432'
-#     }
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://event_db_zmkk_user:Zy4V99f270RhY6WNMZ26tKxBBJYGJsST@dpg-d609uu4hg0os73a6dtlg-a.oregon-postgres.render.com/event_db_zmkk',
+#         conn_max_age=600
+#     )
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'event_m',
+        'USER': 'postgres',
+        'PASSWORD': '2410',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+}
 
 
 # Password validation
@@ -129,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -163,4 +165,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 FRONTEND_URL = 'http://127.0.0.1:8000'
 
-LOGIN_URL = 'sign-in'
+LOGIN_URL = '/users/sign-in/'
+LOGIN_REDIRECT_URL = '/tasks/dashboard/'
+LOGOUT_REDIRECT_URL = '/'

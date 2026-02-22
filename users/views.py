@@ -1,14 +1,19 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth.models import User, Group
-from django.contrib.auth import login, logout
-from users.forms import CustomRegistrationForm, AssignRoleForm, CreateGroupForm
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.models import  Group
+from django.contrib.auth import login, logout, get_user_model
+from users.forms import CustomRegistrationForm, AssignRoleForm, CreateGroupForm, EditProfileForm, CustomPasswordChangeForm, CustomPasswordResetForm,CustomPasswordResetConfirmForm
 from django.contrib import messages
 from django.contrib import messages
 from users.forms import LoginForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
+from django.views.generic import FormView, TemplateView, UpdateView
 from django.db.models import Prefetch
 
+User = get_user_model()
 
 # Create your views here.
 
@@ -16,42 +21,38 @@ from django.db.models import Prefetch
 def is_admin(user):
     return user.groups.filter(name='Admin').exists()
 
+class SignUp(FormView):
+    template_name = "registration/register.html"
+    form_class = CustomRegistrationForm
+    success_url = reverse_lazy("sign-in")
 
-def sign_up(request):
-    form = CustomRegistrationForm()
-    if request.method == 'POST':
-        form = CustomRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data.get('password1'))
-            user.is_active = False
-            user.save()
-            messages.success(
-                request, 'A Confirmation mail sent. Please check your email')
-            return redirect('sign-in')
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data.get("password1"))
+        user.is_active = False
+        user.save()
 
-        else:
-            print("Form is not valid")
-    return render(request, 'registration/register.html', {"form": form})
+        messages.success(
+            self.request,
+            "A Confirmation mail sent. Please check your email"
+        )
 
+        return super().form_valid(form)
 
-def sign_in(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-    return render(request, 'registration/login.html', {'form': form})
+class SignIn(LoginView):
+    form_class = LoginForm
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        return reverse_lazy('home')
 
 
-@login_required
-def sign_out(request):
-    if request.method == 'POST':
+class SignOut(LoginRequiredMixin, LogoutView):
+    def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('sign-in')
-
 
 def activate_user(request, user_id, token):
     try:
@@ -101,23 +102,96 @@ def assign_role(request, user_id):
     return render(request, 'admin/assign_role.html', {"form": form})
 
 
-@user_passes_test(is_admin, login_url='no-permission')
-def create_group(request):
-    form = CreateGroupForm()
-    if request.method == 'POST':
-        form = CreateGroupForm(request.POST)
+class CreateGroup(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'admin/create_group.html'
+    login_url = 'no-permission'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = kwargs.get('form', CreateGroupForm())
+        return context
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        form = CreateGroupForm(request.POST)
         if form.is_valid():
             group = form.save()
             messages.success(request, f"Group {group.name} has been created successfully")
             return redirect('create-group')
-
-    return render(request, 'admin/create_group.html', {'form': form})
-
-
-@user_passes_test(is_admin, login_url='no-permission')
-def group_list(request):
-    groups = Group.objects.prefetch_related('permissions').all()
-    return render(request, 'admin/group_list.html', {'groups': groups})
+    def test_func(self):
+        return is_admin(self.request.user)
 
 
+class GroupList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'admin/group_list.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['groups'] = Group.objects.prefetch_related('permissions').all()
+        return context
+    def test_func(self):
+        return is_admin(self.request.user)
+
+class ProfileView(TemplateView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        context['username'] = user.username
+        context['group'] = user.groups.first().name
+        context['email'] = user.email
+        context['name'] = user.get_full_name()
+        context['phone'] = user.phone
+        context['profile_image'] = user.profile_image
+
+        context['member_since'] = user.date_joined
+        context['last_login'] = user.last_login
+        return context
+    
+class EditProfileView(LoginRequiredMixin,UpdateView):
+    model = User
+    form_class = EditProfileForm
+    template_name = 'accounts/update_profile.html'
+    context_object_name = 'form'
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('profile')
+
+class ChangePassword(LoginRequiredMixin,PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = CustomPasswordChangeForm
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'registration/reset_password.html'
+    success_url = reverse_lazy('sign-in')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocol'] = 'https' if self.request.is_secure() else 'http'
+        context['domain'] = self.request.get_host()
+        print(context)
+        return context
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, 'A Reset email sent. Please check your email')
+        return super().form_valid(form)
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = CustomPasswordResetConfirmForm
+    template_name = 'registration/reset_password.html'
+    success_url = reverse_lazy('sign-in')
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, 'Password reset successfully')
+        return super().form_valid(form)

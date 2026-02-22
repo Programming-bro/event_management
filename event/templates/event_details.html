@@ -17,7 +17,23 @@
             {{event.description}}
         </div>
         <div class="pb-10">
-
+            {% if group == 'Admin' or group == 'Organizer' %}
+                            <div class="py-1">
+                                <a href="{% url "update_event" event.id %}"><button class="bg-green-500 text-white font-semibold py-1 px-2 rounded-sm">Edit</button></a> 
+                            </div>
+                            
+                            <div class="py-1">
+                                <form action="{% url "delete_event" event.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 text-white font-semibold py-1 px-2 rounded-sm">Delete</button>
+                                </form> 
+                            </div>
+                            {% else %}
+                                <form action="{% url "book_event" event.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-blue-500 text-white font-semibold py-1 px-2 rounded-sm">Book Event</button>
+                                </form>
+                            {% endif %}
             <p class="text-base font-semibold">Participants: </p>
             {% for prc in participants %}
                 <div class="justify-between mt-3 grid grid-cols-4">
